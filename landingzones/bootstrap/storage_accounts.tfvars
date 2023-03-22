@@ -1,7 +1,7 @@
 
 storage_accounts = {
   level0 = {
-    name                     = "level0"
+    name                     = "p-iac-statelevel0"
     resource_group_key       = "level0"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
@@ -28,7 +28,7 @@ storage_accounts = {
 
 
   level1 = {
-    name                     = "level1"
+    name                     = "p-iac-statelevel1"
     resource_group_key       = "level1"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
@@ -52,7 +52,7 @@ storage_accounts = {
   }
 
   level2 = {
-    name                     = "level2"
+    name                     = "p-iac-statelevel2"
     resource_group_key       = "level2"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
@@ -76,7 +76,7 @@ storage_accounts = {
   }
 
   level3 = {
-    name                     = "level3"
+    name                     = "p-iac-statelevel3"
     resource_group_key       = "level3"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"
@@ -100,7 +100,7 @@ storage_accounts = {
   }
 
   level4 = {
-    name                     = "level4"
+    name                     = "p-iac-statelevel4"
     resource_group_key       = "level4"
     account_kind             = "BlobStorage"
     account_tier             = "Standard"

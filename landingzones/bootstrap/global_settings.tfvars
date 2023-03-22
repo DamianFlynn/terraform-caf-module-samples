@@ -18,6 +18,7 @@ tags = {
   costCenter     = "0"
   BusinessUnit   = "SHARED"
   DR             = "NON-DR-ENABLED"
+  CreatedOn      = "20230322105000"
 }
 
 # all resources deployed will inherit tags from the parent resource group

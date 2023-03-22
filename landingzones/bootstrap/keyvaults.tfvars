@@ -1,7 +1,7 @@
 
 keyvaults = {
   level0 = {
-    name                = "level0"
+    name                = "p-iac-statelevel0-20230322-kv"
     resource_group_key  = "level0"
     sku_name            = "standard"
     soft_delete_enabled = true
@@ -21,7 +21,7 @@ keyvaults = {
   }
 
   level1 = {
-    name                = "level1"
+    name                = "p-iac-statelevel1-20230322-kv"
     resource_group_key  = "level1"
     sku_name            = "standard"
     soft_delete_enabled = true
@@ -40,7 +40,7 @@ keyvaults = {
   }
 
   level2 = {
-    name                = "level2"
+    name                = "p-iac-statelevel2-20230322-kv"
     resource_group_key  = "level2"
     sku_name            = "standard"
     soft_delete_enabled = true
@@ -60,7 +60,7 @@ keyvaults = {
   }
 
   level3 = {
-    name                = "level3"
+    name                = "p-iac-statelevel3-20230322-kv"
     resource_group_key  = "level3"
     sku_name            = "standard"
     soft_delete_enabled = true
@@ -79,7 +79,7 @@ keyvaults = {
   }
 
   level4 = {
-    name                = "level4"
+    name                = "p-iac-statelevel4-20230322-kv"
     resource_group_key  = "level4"
     sku_name            = "standard"
     soft_delete_enabled = true
