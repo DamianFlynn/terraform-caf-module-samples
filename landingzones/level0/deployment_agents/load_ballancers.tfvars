@@ -8,6 +8,7 @@ load_balancers = {
       config1 = {
         name                  = "config1"
 #        public_ip_address_key = "lb_pip1"
+        subnet_key = "level0"
       }
     }
   }
