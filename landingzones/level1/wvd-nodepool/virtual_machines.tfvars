@@ -61,17 +61,19 @@ virtual_machines = {
 
     virtual_machine_extensions = {
       microsoft_azure_domainjoin = {
-        domain_name = "martinejensenoutlook.onmicrosoft.com"
+        domain_name = "contoso.com"
         ou_path     = ""
         # ou_path     = "OU=AVD,DC=martinejensenoutlook,DC=onmicrosoft,DC=com"
         restart     = "true"
         #specify the AKV location of the password to retrieve for domain join operation
         domain_join_password_keyvault = {
-          keyvault_key = "wvd_nodes_keyvault"
+          lz_key = "adds"
+          keyvault_key = "adds_keyvault"
           secret_name  = "domain-join-password"
         }
         domain_join_username_keyvault = {
-          keyvault_key = "wvd_nodes_keyvault"
+          lz_key = "adds"
+          keyvault_key = "adds_keyvault"
           secret_name  = "domain-join-username"
         }
       }
