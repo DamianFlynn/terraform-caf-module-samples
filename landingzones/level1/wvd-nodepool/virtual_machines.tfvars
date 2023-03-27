@@ -1,8 +1,21 @@
 # Virtual machines
+
+public_ip_addresses = {
+  hostpool_vm1_pip = {
+    name                    = "p-wvdnodes-vm01-pip1"
+    resource_group_key      = "vm_region1"
+    sku                     = "Standard"
+    allocation_method       = "Static"
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+
+  }
+}
+
 virtual_machines = {
 
   # Configuration to deploy a bastion host linux virtual machine
-  example_vm1 = {
+  hostpool_vm1 = {
     region             = "region1"
     resource_group_key = "wvd_nodes"
     provision_vm_agent = true
@@ -23,7 +36,8 @@ virtual_machines = {
         subnet_key              = "wvd_hosts"
         name                    = "nic0"
         enable_ip_forwarding    = false
-        internal_dns_name_label = "nic0-vm7"
+        internal_dns_name_label = "p-wvdnodes-vm01"
+        public_ip_address_key   = "hostpool_vm1_pip"
       }
     }
 
@@ -40,7 +54,7 @@ virtual_machines = {
         network_interface_keys = ["nic0"]
 
         os_disk = {
-          name                 = "example_vm1-os"
+          name                 = "p-wvdnodes-vm01-os"
           caching              = "ReadWrite"
           storage_account_type = "StandardSSD_LRS"
           managed_disk_type    = "StandardSSD_LRS"
@@ -62,8 +76,8 @@ virtual_machines = {
     virtual_machine_extensions = {
       microsoft_azure_domainjoin = {
         domain_name = "contoso.com"
-        ou_path     = ""
-        # ou_path     = "OU=AVD,DC=martinejensenoutlook,DC=onmicrosoft,DC=com"
+        # ou_path     = ""
+        ou_path     = "OU=AVD,DC=contoso,DC=com"
         restart     = "true"
         #specify the AKV location of the password to retrieve for domain join operation
         domain_join_password_keyvault = {
