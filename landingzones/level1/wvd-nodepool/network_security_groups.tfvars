@@ -110,6 +110,7 @@ network_security_group_definition = {
         source_address_prefix      = "*"
         destination_address_prefix = "AzureCloud"
       }
+
     ]
   }
 
@@ -135,16 +136,49 @@ network_security_group_definition = {
 
     nsg = [
       {
-        name                       = "ssh-inbound-22",
+        name                       = "AllowDNSfromDC",
+        priority                   = "100"
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Udp"
+        source_port_range          = "*"
+        destination_port_range     = "53"
+        source_address_prefix      = "10.75.6.4"
+        destination_address_prefix = "*"
+      },
+      {
+        name                       = "AllowSshInboundFromBastion",
         priority                   = "200"
         direction                  = "Inbound"
         access                     = "Allow"
         protocol                   = "tcp"
         source_port_range          = "*"
         destination_port_range     = "22"
-        source_address_prefix      = "*"
+        source_address_prefix      = "10.75.12.128/26"
         destination_address_prefix = "VirtualNetwork"
       },
+      {
+        name                       = "AllowRdpInboundFromBastion",
+        priority                   = "210"
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "tcp"
+        source_port_range          = "*"
+        destination_port_range     = "3389"
+        source_address_prefix      = "10.75.12.128/26"
+        destination_address_prefix = "VirtualNetwork"
+      },
+      {
+        name                       = "DenyAll",
+        priority                   = "4000"
+        direction                  = "Inbound"
+        access                     = "Deny"
+        protocol                   = "*"
+        source_port_range          = "*"
+        destination_port_range     = "*"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+      }
     ]
   }
 
