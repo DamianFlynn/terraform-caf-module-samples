@@ -9,7 +9,25 @@ public_ip_addresses = {
     ip_version              = "IPv4"
     idle_timeout_in_minutes = "4"
 
-    
+    diagnostic_profiles = {
+      central_logs_region1 = {
+        definition_key   = "public_ip_address"
+        destination_type = "log_analytics"
+        lz_key = "mgt-logs"
+        destination_key  = "central_logs"
+      }
+    }
+  }
+
+  hostpool_vm1_pip = {
+    name                    = "p-wvdnodes-vm01-pip1"
+    region                  = "region1"
+    resource_group_key      = "wvd_nodes"
+    sku                     = "Standard"
+    allocation_method       = "Static"
+    ip_version              = "IPv4"
+    idle_timeout_in_minutes = "4"
+
     diagnostic_profiles = {
       central_logs_region1 = {
         definition_key   = "public_ip_address"

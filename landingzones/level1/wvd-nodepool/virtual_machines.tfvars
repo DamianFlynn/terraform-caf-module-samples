@@ -1,16 +1,5 @@
 # Virtual machines
 
-public_ip_addresses = {
-  hostpool_vm1_pip = {
-    name                    = "p-wvdnodes-vm01-pip1"
-    resource_group_key      = "vm_region1"
-    sku                     = "Standard"
-    allocation_method       = "Static"
-    ip_version              = "IPv4"
-    idle_timeout_in_minutes = "4"
-
-  }
-}
 
 virtual_machines = {
 
