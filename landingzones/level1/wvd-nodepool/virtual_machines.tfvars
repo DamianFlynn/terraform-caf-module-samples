@@ -84,7 +84,7 @@ virtual_machines = {
         host_pool = {
           host_pool_key = "wvd_hp1"
           keyvault_key  = "host_pool_secrets"
-          secret_name   = "hostpool-token"
+          secret_name   = "newwvd-hostpool-token"
           lz_key        = "wvd"
         }
         # base_url = "https://raw.githubusercontent.com/Azure/RDS-Templates/master/ARM-wvd-templates"
