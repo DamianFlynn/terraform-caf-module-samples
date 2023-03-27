@@ -87,8 +87,8 @@ virtual_machines = {
           secret_name   = "newwvd-hostpool-token"
           lz_key        = "wvd"
         }
-        # base_url = "https://raw.githubusercontent.com/Azure/RDS-Templates/master/ARM-wvd-templates"
-        base_url = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_02-23-2022.zip"
+        base_url = "https://raw.githubusercontent.com/Azure/RDS-Templates/master/ARM-wvd-templates"
+        # base_url = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_02-23-2022.zip"
       }
 
       # custom_script = {
