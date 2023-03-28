@@ -1,23 +1,36 @@
-# Launchpad - scenario 100
+
+# Terraform State Managment
+
+This is the launch pad for any azure framework component, to correctly work with the state management system
+
+## Configuration
+
+|Workload|level|subscription|state file|key|folder|
+|---|---|---|---|---|---|
+|state management|0|p-iac|state|state|l0\p-iac-state|
+
+## Dependencies
+
+Owner on Subsription to be used as `p-iac`
 
 
 ### Launchpad
 
 ```bash
 # Login to the subscription p-mgt with the user damian.flynn_innofactor.com#EXT#@InnoNorgeHack3.onmicrosoft.com
-rover login -t InnoNorgeHack3.onmicrosoft.com -s f6b3f099-986b-4a79-b829-e7a38b86b361
+rover login -t InnoNorgeHack3.onmicrosoft.com -s b4e6ba46-404a-408e-a3f3-475b5f0f482d
 
 
 rover \
   -lz /tf/caf/acf/platform/launchpad \
   -var-folder /tf/caf/acf/landingzones/l0/p-iac-state \
-  -tfstate_subscription_id f6b3f099-986b-4a79-b829-e7a38b86b361 \
-  -target_subscription f6b3f099-986b-4a79-b829-e7a38b86b361 \
-  -tfstate opus_state.tfstate \
+  -tfstate_subscription_id b4e6ba46-404a-408e-a3f3-475b5f0f482d \
+  -target_subscription b4e6ba46-404a-408e-a3f3-475b5f0f482d \
+  -tfstate state.tfstate \
   -launchpad \
-  -env opus \
+  -env orion \
   -level level0 \
-  -p ${TF_DATA_DIR}/opus_state.tfstate.tfplan \
+  -p ${TF_DATA_DIR}/state.tfstate.tfplan \
   -a plan
 ```
 

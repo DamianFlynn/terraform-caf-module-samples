@@ -1,0 +1,26 @@
+vnets = {
+  vnet_region1 = {
+    resource_group_key = "vnet"
+    vnet = {
+      name          = "management"
+      address_space = ["10.101.64.0/21"]
+    }
+    subnets = {
+      private_endpoints = {
+        name                                           = "private-endpoints"
+        cidr                                           = ["10.101.64.0/27"]
+        enforce_private_link_endpoint_network_policies = true
+      }
+      gitops_platform = {
+        name    = "gitops-platform-lz"
+        cidr    = ["10.101.65.0/24"]
+        nsg_key = "empty_nsg"
+      }
+      gitops_application = {
+        name    = "gitops-application-lz"
+        cidr    = ["10.101.66.0/24"]
+        nsg_key = "empty_nsg"
+      }
+    }
+  }
+}

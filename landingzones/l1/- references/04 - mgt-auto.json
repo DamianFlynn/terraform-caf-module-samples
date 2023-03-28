@@ -1,0 +1,358 @@
+{
+  "structureVersion": "3.9.2",
+  "containerVersion": "3.0.9",
+  "force": true,
+  "replaceStrings": {
+    "[#_service.environment_#]": "p",
+    "[#_service.name_#]": "mgt"
+  },
+  "namingStandard": {
+    "rbacGroups": "{prefix} {type} {scope} [{resource} [{right}]] {delegation}",
+    "subscriptions": "[{environment}-]{service}",
+    "resourceGroups": "{environment}-{service}-[{role}]"
+  },
+  "tenants": [
+    {
+      "name": "[#_central.tenant.name_#]",
+      "id": "[#_central.tenant.id_#]",
+      "deployClientId": "[#_central.tenant.deployclient.id_#]",
+      "location": "[#_datacenter.001.location_#]"
+    }
+  ],
+  "datacenters": [
+    {
+      "name": "[#_datacenter.001.name_#]",
+      "location": "[#_datacenter.001.location_#]"
+    }
+  ],
+  "subscriptions": [
+    {
+      "datacenter": "[#_central.datacenter.name_#]",
+      "environment": "[#_service.environment_#]",
+      "service": "[#_service.name_#]",
+      "location": "[#_central.datacenter.location_#]",
+      "id": "[#_central.mgt.subscription.id_#]"
+    }
+  ],
+  "resourceGroups": [
+    {
+      "datacenter": "[#_central.datacenter.name_#]",
+      "environment": "[#_service.environment_#]",
+      "service": "[#_service.name_#]",
+      "role": "auto",
+      "location": "[#_central.datacenter.location_#]",
+      "deployments": [
+        "res.arm.automation",
+        "res.arm.softwareupdate"
+      ]
+    }
+  ],
+  "dependActions": [
+    {
+      "deployments": [
+        "res.arm.softwareupdate"
+      ],
+      "replace": "[@_res.arm.automation.id_@]",
+      "source": {
+        "deployment": "res.arm.automation",
+        "outputName": "automationId",
+        "role": "auto"
+      }
+    }
+  ],
+  "deployments": [
+    {
+      "name": "res.arm.automation",
+      "templatePath": "https://piacinnofactor.blob.core.windows.net/modules/res.arm.automation/2021-02-25/res.arm.automation.json",
+      "canRedeploy": true,
+      "mode": "Deploy",
+      "parameters": {
+        "partnerCountry": {
+          "value": "[#_central.partner.country_#]"
+        },
+        "tagValues": {
+          "value": {
+            "Application": "[#_service.name_#]",
+            "Environment": "[#_service.environment_#]",
+            "Purpose": "This resource is part of core infrastructure. Do not delete."
+          }
+        }
+      }
+    },
+    {
+      "name": "res.arm.softwareupdate",
+      "templatePath": "https://piacinnofactor.blob.core.windows.net/modules/res.arm.softwareupdate/2021-02-25/res.arm.softwareupdate.json",
+      "canRedeploy": true,
+      "mode": "Force",
+      "parameters": {
+        "partnerCountry": {
+          "value": "[#_central.partner.country_#]"
+        },
+        "tagValues": {
+          "value": {
+            "Application": "[#_service.name_#]",
+            "Environment": "[#_service.environment_#]",
+            "Purpose": "This resource is part of core infrastructure. Do not delete."
+          }
+        },
+        "automationId": {
+          "value": "[@_res.arm.automation.id_@]"
+        },
+        "schedulesWindows": {
+          "value": [
+            {
+              "name": "WE, H6, 00, Windows",
+              "includedClassifications": "Definition",
+              "rebootSetting": "Never",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Hourly every 6 hours, starting from 30 minutes past midnight [#_softwareupdate.timezone_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:30:00.000",
+              "interval": 6,
+              "tags": {},
+              "frequency": "Hour",
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "WE, W6, [#_softwareupdate.run.hour.adds_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Weekly at [#_softwareupdate.run.day1.name_#], starting at [#_softwareupdate.run.hour.adds_#]:00 hours [#_softwareupdate.timezone_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.adds_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day1.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "WE, W6, [#_softwareupdate.run.hour.servers_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Weekly at [#_softwareupdate.run.day1.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day1.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "WE, W7, [#_softwareupdate.run.hour.adds_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Weekly at [#_softwareupdate.run.day2.name_#], starting at [#_softwareupdate.run.hour.adds_#]:00 hours [#_softwareupdate.timezone_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.adds_#]:00:00.000",
+              "expiryTime": "9999-12-31T23:59:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day2.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "WE, W7, [#_softwareupdate.run.hour.servers_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Weekly at [#_softwareupdate.run.day2.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day2.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "NE, H6, 00, Windows",
+              "includedClassifications": "Definition",
+              "rebootSetting": "Never", // IfRequired, Never, Always, RebootOnly
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Hourly every 6 hours, starting from 30 minutes past midnight [#_softwareupdate.timezone.bst_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:30:00.000",
+              "interval": 6,
+              "tags": {},
+              "frequency": "Hour",
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            },
+            {
+              "name": "NE, W6, [#_softwareupdate.run.hour.adds_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Weekly at [#_softwareupdate.run.day1.name_#], starting at [#_softwareupdate.run.hour.adds_#]:00 hours [#_softwareupdate.timezone.bst_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.adds_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day1.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            },
+            {
+              "name": "NE, W6, [#_softwareupdate.run.hour.servers_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Weekly at [#_softwareupdate.run.day1.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone.bst_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day1.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            },
+            {
+              "name": "NE, W7, [#_softwareupdate.run.hour.adds_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Weekly at [#_softwareupdate.run.day2.name_#], starting at [#_softwareupdate.run.hour.adds_#]:00 hours [#_softwareupdate.timezone.bst_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.adds_#]:00:00.000",
+              "expiryTime": "9999-12-31T23:59:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day2.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            },
+            {
+              "name": "NE, W7, [#_softwareupdate.run.hour.servers_#], Windows",
+              "includedClassifications": "Critical,Definition,FeaturePack,Security,ServicePack,Tools,UpdateRollup,Updates",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Weekly at [#_softwareupdate.run.day2.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone.bst_#] time, Windows Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day2.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            }
+          ]
+        },
+        "schedulesLinux": {
+          "value": [
+            {
+              "name": "WE, W6, [#_softwareupdate.run.hour.servers_#], Linux",
+              "includedClassifications": "Critical,Security,Other",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Weekly at [#_softwareupdate.run.day1.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone_#] time, Linux Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day1.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "WE, W7, [#_softwareupdate.run.hour.servers_#], Linux",
+              "includedClassifications": "Critical,Security,Other",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.001.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.001.location_#], Weekly at [#_softwareupdate.run.day2.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone_#] time, Linux Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day2.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone_#]"
+            },
+            {
+              "name": "NE, W6, [#_softwareupdate.run.hour.servers_#], Linux",
+              "includedClassifications": "Critical,Security,Other",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Weekly at [#_softwareupdate.run.day1.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone.bst_#] time, Linux Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day1.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            },
+            {
+              "name": "NE, W7, [#_softwareupdate.run.hour.servers_#], Linux",
+              "includedClassifications": "Critical,Security,Other",
+              "rebootSetting": "IfRequired",
+              "scope": [
+                "/subscriptions/[#_datacenter.002.dc.subscription.id_#]"
+              ],
+              "description": "[#_datacenter.002.location_#], Weekly at [#_softwareupdate.run.day2.name_#], starting at [#_softwareupdate.run.hour.servers_#]:00 hours [#_softwareupdate.timezone.bst_#] time, Linux Computers",
+              "startTime": "[#_softwareupdate.run.startdate_#]T[#_softwareupdate.run.hour.servers_#]:00:00.000",
+              "interval": 1,
+              "frequency": "Week",
+              "advancedSchedule": {
+                "weekDays": [
+                  "[#_softwareupdate.run.day2.name_#]"
+                ]
+              },
+              "timeZone": "[#_softwareupdate.timezone.bst_#]"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

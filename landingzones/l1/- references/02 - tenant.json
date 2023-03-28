@@ -1,0 +1,549 @@
+{
+  "structureVersion": "3.9.1",
+  "containerVersion": "3.0.8",
+  "force": false,
+  "namingStandard": {
+    "rbacGroups": "{prefix} {type} {scope} [{resource} [{right}]] {delegation}",
+    "subscriptions": "[{environment}-]{service}",
+    "resourceGroups": "{environment}-{service}-[{role}]"
+  },
+  "tenants": [
+    {
+      "name": "[#_central.tenant.name_#]",
+      "id": "[#_central.tenant.id_#]",
+      "deployClientId": "[#_central.tenant.deployclient.id_#]",
+      "location": "[#_datacenter.001.location_#]"
+    }
+  ],
+  "datacenters": [
+    {
+      "name": "[#_datacenter.001.name_#]",
+      "location": "[#_datacenter.001.location_#]"
+    },
+    {
+      "name": "[#_datacenter.002.name_#]",
+      "location": "[#_datacenter.002.location_#]"
+    }
+  ],
+  "rbacGroups": [
+    {
+      "configId": "mg.vdcroot.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.managementgroup.root.displayname_#]",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources.",
+      "members": {
+        "applications": [
+          "[@_tenant.deployObjectId_@]"
+        ]
+      }
+    },
+    {
+      "configId": "mg.vdcroot.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.managementgroup.root.displayname_#]",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.vdcroot.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.managementgroup.root.displayname_#]",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.gov.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Governance",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.gov.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Governance",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.gov.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Governance",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.mgt.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Management",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.mgt.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Management",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.mgt.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Management",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.globalnet.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "GlobalNet",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.globalnet.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "GlobalNet",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.globalnet.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "GlobalNet",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.sec.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Security",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.sec.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Security",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.sec.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "Security",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.vdc.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#]",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.vdc.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#]",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.vdc.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#]",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#].owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#]",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#].contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#]",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#].reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#]",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]spokes.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Spokes",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]spokes.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Spokes",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]spokes.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Spokes",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]productionspokes.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Production Spokes",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]productionspokes.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Production Spokes",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]productionspokes.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Production Spokes",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]nonproductionspokes.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Non Production Spokes",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]nonproductionspokes.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Non Production Spokes",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.001.name_#]nonproductionspokes.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.001.name.caps_#] Non Production Spokes",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#].owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#]",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#].contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#]",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#].reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#]",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]spokes.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Spokes",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]spokes.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Spokes",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]spokes.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Spokes",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]productionspokes.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Production Spokes",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]productionspokes.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Production Spokes",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]productionspokes.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Production Spokes",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]nonproductionspokes.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Non Production Spokes",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]nonproductionspokes.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Non Production Spokes",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.[#_datacenter.002.name_#]nonproductionspokes.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "[#_central.datacenter.instance.name.caps_#] [#_datacenter.002.name.caps_#] Non Production Spokes",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    },
+    {
+      "configId": "mg.edc.owner",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "EDC",
+      "delegation": "Owner",
+      "description": "This is a break glass privilege, not to be assigned outside of emergencies. Lets you manage everything in all contained management groups and subscriptions, including access to resources."
+    },
+    {
+      "configId": "mg.edc.contributor",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "EDC",
+      "delegation": "Contributor",
+      "description": "Lets you manage everything in all contained management groups and subscriptions, including access to resources, except for permissions."
+    },
+    {
+      "configId": "mg.edc.reader",
+      "prefix": "[#_central.rbacgroup.prefix_#]",
+      "type": "mg",
+      "scope": "EDC",
+      "delegation": "Reader",
+      "description": "Lets you see everything in all contained management groups and subscriptions, including resources and their configurations, but not make any changes."
+    }
+  ],
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //                         managementGroups
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  "managementGroups": [
+    {
+      "name": "[#_central.managementgroup.root.name_#]",
+      "displayName": "[#_central.managementgroup.root.displayname_#]",
+      "rbacGroups": [
+        "mg.vdcroot.owner",
+        "mg.vdcroot.contributor",
+        "mg.vdcroot.reader"
+      ]
+    },
+    {
+      "name": "gov",
+      "displayName": "Governance",
+      "rbacGroups": [
+        "mg.gov.owner",
+        "mg.gov.contributor",
+        "mg.gov.reader"
+      ],
+      "parent": "[#_central.managementgroup.root.name_#]"
+    },
+    {
+      "name": "mgt",
+      "displayName": "Management",
+      "rbacGroups": [
+        "mg.mgt.owner",
+        "mg.mgt.contributor",
+        "mg.mgt.reader"
+      ],
+      "parent": "[#_central.managementgroup.root.name_#]"
+    },
+    {
+      "name": "globalnet",
+      "displayName": "GlobalNet",
+      "rbacGroups": [
+        "mg.globalnet.owner",
+        "mg.globalnet.contributor",
+        "mg.globalnet.reader"
+      ],
+      "parent": "[#_central.managementgroup.root.name_#]"
+    },
+    {
+      "name": "sec",
+      "displayName": "Security",
+      "rbacGroups": [
+        "mg.sec.owner",
+        "mg.sec.contributor",
+        "mg.sec.reader"
+      ],
+      "parent": "[#_central.managementgroup.root.name_#]"
+    },
+    {
+      "name": "[#_central.datacenter.instance.name_#]",
+      "displayName": "[#_central.datacenter.instance.name.caps_#]",
+      "rbacGroups": [
+        "mg.vdc.owner",
+        "mg.vdc.contributor",
+        "mg.vdc.reader"
+      ],
+      "parent": "[#_central.managementgroup.root.name_#]"
+    },
+    {
+      "name": "[#_datacenter.001.name_#]",
+      "displayName": "[#_datacenter.001.name.caps_#]",
+      "rbacGroups": [
+        "mg.[#_datacenter.001.name_#].owner",
+        "mg.[#_datacenter.001.name_#].contributor",
+        "mg.[#_datacenter.001.name_#].reader"
+      ],
+      "parent": "[#_central.datacenter.instance.name_#]"
+    },
+    {
+      "name": "[#_datacenter.001.name_#]spokes",
+      "displayName": "[#_datacenter.001.name.caps_#] Spokes",
+      "rbacGroups": [
+        "mg.[#_datacenter.001.name_#]spokes.owner",
+        "mg.[#_datacenter.001.name_#]spokes.contributor",
+        "mg.[#_datacenter.001.name_#]spokes.reader"
+      ],
+      "parent": "[#_datacenter.001.name_#]"
+    },
+    {
+      "name": "[#_datacenter.001.name_#]productionspokes",
+      "displayName": "[#_datacenter.001.name.caps_#] Production Spokes",
+      "rbacGroups": [
+        "mg.[#_datacenter.001.name_#]productionspokes.owner",
+        "mg.[#_datacenter.001.name_#]productionspokes.contributor",
+        "mg.[#_datacenter.001.name_#]productionspokes.reader"
+      ],
+      "parent": "[#_datacenter.001.name_#]spokes"
+    },
+    {
+      "name": "[#_datacenter.001.name_#]nonproductionspokes",
+      "displayName": "[#_datacenter.001.name.caps_#] Non Production Spokes",
+      "rbacGroups": [
+        "mg.[#_datacenter.001.name_#]nonproductionspokes.owner",
+        "mg.[#_datacenter.001.name_#]nonproductionspokes.contributor",
+        "mg.[#_datacenter.001.name_#]nonproductionspokes.reader"
+      ],
+      "parent": "[#_datacenter.001.name_#]spokes"
+    },
+    // {
+    //   "name": "[#_datacenter.002.name_#]",
+    //   "displayName": "[#_datacenter.002.name.caps_#]",
+    //   "rbacGroups": [
+    //     "mg.[#_datacenter.002.name_#].owner",
+    //     "mg.[#_datacenter.002.name_#].contributor",
+    //     "mg.[#_datacenter.002.name_#].reader"
+    //   ],
+    //   "parent": "[#_central.datacenter.instance.name_#]"
+    // },
+    // {
+    //   "name": "[#_datacenter.002.name_#]spokes",
+    //   "displayName": "[#_datacenter.002.name.caps_#] Spokes",
+    //   "rbacGroups": [
+    //     "mg.[#_datacenter.002.name_#]spokes.owner",
+    //     "mg.[#_datacenter.002.name_#]spokes.contributor",
+    //     "mg.[#_datacenter.002.name_#]spokes.reader"
+    //   ],
+    //   "parent": "[#_datacenter.002.name_#]"
+    // },
+    // {
+    //   "name": "[#_datacenter.002.name_#]productionspokes",
+    //   "displayName": "[#_datacenter.002.name.caps_#] Production Spokes",
+    //   "rbacGroups": [
+    //     "mg.[#_datacenter.002.name_#]productionspokes.owner",
+    //     "mg.[#_datacenter.002.name_#]productionspokes.contributor",
+    //     "mg.[#_datacenter.002.name_#]productionspokes.reader"
+    //   ],
+    //   "parent": "[#_datacenter.002.name_#]spokes"
+    // },
+    // {
+    //   "name": "[#_datacenter.002.name_#]nonproductionspokes",
+    //   "displayName": "[#_datacenter.002.name.caps_#] Non Production Spokes",
+    //   "rbacGroups": [
+    //     "mg.[#_datacenter.002.name_#]nonproductionspokes.owner",
+    //     "mg.[#_datacenter.002.name_#]nonproductionspokes.contributor",
+    //     "mg.[#_datacenter.002.name_#]nonproductionspokes.reader"
+    //   ],
+    //   "parent": "[#_datacenter.002.name_#]spokes"
+    // },
+    {
+      "name": "edc",
+      "displayName": "EDC",
+      "rbacGroups": [
+        "mg.edc.owner",
+        "mg.edc.contributor",
+        "mg.edc.reader"
+      ],
+      "parent": "[#_central.managementgroup.root.name_#]"
+    }
+  ]
+}

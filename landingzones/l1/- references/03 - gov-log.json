@@ -1,0 +1,119 @@
+{
+  "structureVersion": "3.9.1",
+  "containerVersion": "3.0.9",
+  "force": false,
+  "replaceStrings": {
+    "[#_service.environment_#]": "p",
+    "[#_service.name_#]": "gov"
+  },
+  "namingStandard": {
+    "rbacGroups": "{prefix} {type} {scope} [{resource} [{right}]] {delegation}",
+    "subscriptions": "[{environment}-]{service}",
+    "resourceGroups": "{environment}-{service}-[{role}]"
+  },
+  "tenants": [
+    {
+      "name": "[#_central.tenant.name_#]",
+      "id": "[#_central.tenant.id_#]",
+      "deployClientId": "[#_central.tenant.deployclient.id_#]",
+      "location": "[#_datacenter.001.location_#]"
+    }
+  ],
+  "datacenters": [
+    {
+      "name": "[#_datacenter.001.name_#]",
+      "location": "[#_datacenter.001.location_#]"
+    }
+  ],
+  "subscriptions": [
+    {
+      "datacenter": "[#_central.datacenter.name_#]",
+      "environment": "[#_service.environment_#]",
+      "service": "[#_service.name_#]",
+      "location": "[#_central.datacenter.location_#]",
+      "id": "[#_central.gov.subscription.id_#]"
+    }
+  ],
+  "resourceGroups": [
+    {
+      "datacenter": "[#_central.datacenter.name_#]",
+      "environment": "[#_service.environment_#]",
+      "service": "[#_service.name_#]",
+      "role": "log",
+      "location": "[#_central.datacenter.location_#]",
+      "lockLevel": "CanNotDelete",
+      "deployments": [
+        "res.arm.storage.audit"
+      ]
+    }
+  ],
+  "deployments": [
+    {
+      "name": "res.arm.storage.audit",
+      "templatePath": "https://piacinnofactor.blob.core.windows.net/modules/res.arm.storage/2021-02-25/res.arm.storage.json",
+      "canRedeploy": true,
+      "mode": "Deploy",
+      "parameters": {
+        "partnerCountry": {
+          "value": "[#_central.partner.country_#]"
+        },
+        "tagValues": {
+          "value": {
+            "Application": "[#_service.name_#]",
+            "Environment": "[#_service.environment_#]",
+            "Purpose": "This resource is part of core infrastructure. Do not delete."
+          }
+        },
+        "purpose": {
+          "value": "audit"
+        },
+        "resilience": {
+          "value": "Standard_GRS"
+        },
+        "kind": {
+          "value": "StorageV2"
+        },
+        "storageLifecycleRules": {
+          "value": [
+            {
+              "enabled": true,
+              "name": "TieringRule",
+              "type": "Lifecycle",
+              "definition": {
+                "actions": {
+                  "baseBlob": {
+                    "tierToCool": {
+                      "daysAfterModificationGreaterThan": "[#_audit.blob.lifecycle.cool_#]"
+                    },
+                    "tierToArchive": {
+                      "daysAfterModificationGreaterThan": "[#_audit.blob.lifecycle.archive_#]"
+                    },
+                    "delete": {
+                      "daysAfterModificationGreaterThan": "[#_audit.blob.lifecycle.delete_#]"
+                    }
+                  },
+                  "snapshot": {
+                    "delete": {
+                      "daysAfterCreationGreaterThan": "[#_audit.blob.lifecycle.snapshotdelete_#]"
+                    }
+                  }
+                },
+                "filters": {
+                  "blobTypes": [
+                    "blockBlob"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "networkAclsBypass": {
+          "value": "AzureServices"
+        },
+        "networkAclsDefaultAction": {
+          "value": "Allow"
+        }
+      }
+    }
+  ]
+}
