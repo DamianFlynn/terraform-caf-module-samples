@@ -2,7 +2,7 @@ landingzone = {
   backend_type        = "azurerm"
   global_settings_key = "launchpad"
   level               = "level1"
-  key                 = "wvd_nodepool"
+  key                 = "wvd_msix_reqs"
   tfstates = {
     launchpad = {
       level   = "current"
@@ -22,11 +22,6 @@ landingzone = {
     wvd = {
       level   = "current"
       tfstate = "wvd.tfstate"
-    }
-
-    wvd_msix_reqs = {
-      level    = "current"
-      tfstate  = "wvd-msix-reqs.tfstate"
     }
 
   }

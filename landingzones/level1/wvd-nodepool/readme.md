@@ -31,4 +31,16 @@ Architecture
         * Events: azurerm_virtual_desktop_workspace
         
   * Resource Group: p-wvd-hostpool
+
   * Resource Group: p-wvd-nodes
+    * VM: p-wvdnodes-vm01
+      * NIC: nic0
+      * OSdisk: p-wvdnodes-vm01-os
+      * Managed Identity: wvd_node_mi
+      * Extensions
+        * Domain join
+        * DSC, host pool registration
+        * Custom script, attach fileshare and import MSIX certificate
+    * Managed Identity: wvd_node_mi
+      * Role mapping: "Storage Blob Data Reader"
+        * Storage Account: pmsixsa20230328

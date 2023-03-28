@@ -26,7 +26,7 @@ virtual_machines = {
         name                    = "nic0"
         enable_ip_forwarding    = false
         internal_dns_name_label = "p-wvdnodes-vm01"
-        public_ip_address_key   = "hostpool_vm1_pip"
+        # public_ip_address_key   = "hostpool_vm1_pip"
       }
     }
 
@@ -56,6 +56,11 @@ virtual_machines = {
           offer     = "windows-11"
           sku       = "win11-22h2-avd"
           version   = "latest"
+        }
+
+        identity = {
+          type                  = "UserAssigned"
+          managed_identity_keys = ["wvd_node_mi"]
         }
       }
     }
@@ -91,21 +96,24 @@ virtual_machines = {
         # base_url = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_02-23-2022.zip"
       }
 
-      # custom_script = {
-        #fileuris            = ["https://somelocation/container/script.ps1"]
+      custom_script = {
+        # fileuris            = ["https://somelocation/container/script.ps1"]
         # can define fileuris directly or use fileuri_sa_ reference keys and lz_key:
-        # fileuri_sa_key   = "sa1"
-        # fileuri_sa_path  = "files/helloworld.ps1"
-        # commandtoexecute = "PowerShell -encodedCommand ${textencodebase64(file("Script/attach-fileshare_import-cert.ps1"), "UTF-16LE")}"
-        # commandtoexecute = "Script/attach-fileshare_import-cert.ps1"
+        fileuri_sa_key   = "msix_sa"
+        fileuri_sa_path  = "scripts/attach-fileshare_import-cert.ps1"
+        commandtoexecute = "PowerShell -file attach-fileshare_import-cert.ps1"
         
+        # managed_identity_id = # optional to define managed identity principal_id directly
+        identity_type        = "UserAssigned" #optional to use managed_identity for download from location specified in fileuri, UserAssigned or SystemAssigned.
+        managed_identity_key = "wvd_node_mi"
+        lz_key               = "wvd_msix_reqs" #optional for managed identity defined in other lz
+        # lz_key               = "wvd_nodepool" #optional for managed identity defined in other lz
+
+        # Testing:
+        # commandtoexecute = "PowerShell -encodedCommand ${textencodebase64(file("Script/attach-fileshare_import-cert.ps1"), "UTF-16LE")}"        
         # scriptpath = "Script/attach-fileshare_import-cert.ps1"
-        
-        # managed_identity_id = optional to define managed identity principal_id directly
-        # identity_type        = "UserAssigned" #optional to use managed_identity for download from location specified in fileuri, UserAssigned or SystemAssigned.
-        # managed_identity_key = "user_mi"
-        #lz_key               = "other_lz" optional for managed identity defined in other lz
-      # } 
+
+      } 
     }
   }
 }
