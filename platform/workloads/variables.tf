@@ -191,6 +191,15 @@ variable "user_type" {
   default     = {}
 }
 
+variable "management_groups" {
+  description = "Management Group configuration object"
+  default = {}
+  # type = map(object({
+  #   name        = string
+  #   displayName = string
+  #   parent_key  = optional(string)
+  # }))
+}
 
 variable "managed_identities" {
   description = "Managed Identity configuration objects"

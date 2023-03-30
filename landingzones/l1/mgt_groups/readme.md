@@ -7,7 +7,7 @@ rover \
   -tfstate_subscription_id b4e6ba46-404a-408e-a3f3-475b5f0f482d \
   -target_subscription 7f798b1d-5b09-491f-82e1-5aed7d81f8c1 \
   -tfstate mgt_groups.tfstate \
-  -env opus \
+  -env orion \
   -level level1 \
   -w tfstate \
   -p ${TF_DATA_DIR}/mgt_groups.tfstate.tfplan \
